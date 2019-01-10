@@ -22,8 +22,7 @@ public class BaseBrowserTest {
         if(browser!=null) {
             if (browser.equals("firefox")) {
                 System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
-                FirefoxOptions options = new FirefoxOptions();
-                driver = new FirefoxDriver(options);
+                driver = new FirefoxDriver();
 
             } else if (browser.equals("chrome")) {
                 System.setProperty("webdriver.chrome.driver", this.getClass().getClassLoader().getResource("chromedriver").getPath());

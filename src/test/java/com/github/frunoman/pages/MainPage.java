@@ -32,7 +32,7 @@ public class MainPage extends BasePage{
         }
     }
 
-//    @Step("Щелкнуть по категории")
+    @Step("Щелкнуть по категории")
     public void clickOnCategory(Categories category) {
 //        waitForElements(mainCategories);
         for(WebElement element:mainCategories){

@@ -3,6 +3,7 @@ package com.github.frunoman.tests;
 import com.github.frunoman.pages.MainPage;
 
 import com.github.frunoman.utils.Categories;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class BrowserTest extends BaseBrowserTest {
