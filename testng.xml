@@ -1,0 +1,32 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="tests"  thread-count="10" >
+    <test name="firstWindow">
+        <parameter name="browser" value="firefox" />
+        <classes>
+            <class name="com.github.frunoman.tests.BrowserTest"/>
+        </classes>
+    </test>
+
+    <test name="secondWindow">
+        <parameter name="browser" value="firefox" />
+        <classes>
+            <class name="com.github.frunoman.tests.BrowserTest"/>
+        </classes>
+    </test>
+
+    <test name="thirdWindow">
+        <parameter name="browser" value="chrome" />
+        <classes>
+            <class name="com.github.frunoman.tests.BrowserTest"/>
+        </classes>
+    </test>
+
+    <test name="fourthWindow">
+        <parameter name="browser" value="chrome" />
+        <classes>
+            <class name="com.github.frunoman.tests.BrowserTest"/>
+        </classes>
+    </test>
+
+
+</suite>
