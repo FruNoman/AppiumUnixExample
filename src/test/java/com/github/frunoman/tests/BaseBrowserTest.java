@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.util.concurrent.TimeUnit;
@@ -15,13 +16,18 @@ public class BaseBrowserTest {
 
     @Parameters("browser")
     @BeforeClass
-    public void beforeSuite(String browser) {
-        if (browser.equals("firefox")) {
+    public void beforeSuite(@Optional String browser) {
+        if(browser!=null) {
+            if (browser.equals("firefox")) {
+                System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
+                driver = new FirefoxDriver();
+            } else if (browser.equals("chrome")) {
+                System.setProperty("webdriver.chrome.driver", this.getClass().getClassLoader().getResource("chromedriver").getPath());
+                driver = new ChromeDriver();
+            }
+        }else {
             System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
             driver = new FirefoxDriver();
-        } else if (browser.equals("chrome")) {
-            System.setProperty("webdriver.chrome.driver", this.getClass().getClassLoader().getResource("chromedriver").getPath());
-            driver = new ChromeDriver();
         }
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("http://google.com");
