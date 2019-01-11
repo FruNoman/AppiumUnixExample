@@ -19,7 +19,7 @@
     <test name="appiumTest">
         <parameter name="udid" value="WWJNKFORFYSK8PPN" />
         <classes>
-            <class name="com.github.frunoman.appium_tests.SimpleAppiumTests"/>
+            <class name="com.github.frunoman.tests.BrowserTest"/>
         </classes>
     </test>
 
