@@ -21,18 +21,7 @@ public class MainPage extends BasePage{
     }
 
 
-    public void hoverOnCategory(Categories category) {
-        waitForElements(mainCategories);
-        for(WebElement element:mainCategories){
-            if(element.getText().equals(category.toString())){
-                Actions actions = new Actions(driver);
-                actions.moveToElement(element).build().perform();
-                break;
-            }
-        }
-    }
-
-    @Step("Щелкнуть по категории")
+//    @Step("Щелкнуть по категории")
     public void clickOnCategory(Categories category) {
 //        waitForElements(mainCategories);
         for(WebElement element:mainCategories){
