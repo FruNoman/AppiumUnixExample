@@ -2,24 +2,24 @@
 <suite name="Suite" parallel="tests"  thread-count="10" >
 
 
-    <test name="thirdWindow">
+    <test name="firefoxTests">
         <parameter name="browser" value="firefox" />
         <classes>
-            <class name="com.github.frunoman.tests.BrowserTest"/>
+            <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>
     </test>
 
-    <test name="fourthWindow">
+    <test name="chromeTests">
         <parameter name="browser" value="chrome" />
         <classes>
-            <class name="com.github.frunoman.tests.BrowserTest"/>
+            <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>
     </test>
 
-    <test name="appiumTest">
+    <test name="androidTests">
         <parameter name="udid" value="WWJNKFORFYSK8PPN" />
         <classes>
-            <class name="com.github.frunoman.tests.BrowserTest"/>
+            <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>
     </test>
 

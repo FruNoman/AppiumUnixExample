@@ -22,7 +22,7 @@ public class MainPage extends BasePage{
     private RemoteWebElement personalAreaButton;
 
 
-    public MainPage(AppiumDriver driver) {
+    public MainPage(WebDriver driver) {
         super(driver);
     }
 

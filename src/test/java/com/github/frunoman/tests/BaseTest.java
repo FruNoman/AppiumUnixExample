@@ -22,12 +22,12 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
-public class BaseBrowserTest {
+public class BaseTest {
     WebDriver driver;
     String Node = "http://172.22.89.63:4444/wd/hub";
 
     @Parameters({"browser", "udid"})
-    @BeforeClass
+    @BeforeClass(description = "Инициализация тестового окружения")
     public void beforeSuite(@Optional String browser, @Optional String udid) throws MalformedURLException {
         if (browser != null) {
             if (browser.equals("firefox")) {
@@ -68,7 +68,7 @@ public class BaseBrowserTest {
 
     }
 
-    @AfterClass
+    @AfterClass(description = "Закрытие тестового окружения")
     public void afterSuite() {
         driver.quit();
     }
