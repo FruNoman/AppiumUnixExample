@@ -17,7 +17,14 @@
     </test>
 
     <test name="androidTests">
-        <parameter name="udid" value="WWJNKFORFYSK8PPN" />
+        <parameter name="udid" value="FA8311A00879" />
+        <classes>
+            <class name="com.github.frunoman.tests.LoginTests"/>
+        </classes>
+    </test>
+
+    <test name="androidTests1">
+        <parameter name="udid" value="L91HVCPF2244Y" />
         <classes>
             <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>

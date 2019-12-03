@@ -50,7 +50,7 @@ public class BaseTest {
             capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
             capabilities.setCapability(AndroidMobileCapabilityType.APP_WAIT_ACTIVITY, "ua.com.rozetka.shop.*");
             capabilities.setCapability(MobileCapabilityType.UDID, udid);
-            capabilities.setCapability(AndroidMobileCapabilityType.SYSTEM_PORT, 5672);
+            capabilities.setCapability(AndroidMobileCapabilityType.SYSTEM_PORT, new Random().nextInt(5672));
             capabilities.setCapability("platformName", "android");
             capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "device");
             capabilities.setCapability(MobileCapabilityType.FULL_RESET, false);

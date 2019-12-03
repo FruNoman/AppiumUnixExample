@@ -13,9 +13,17 @@ public class LoginTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "Базовый вход в личный кабинет")
-    public void baseLoginTest(){
+    public void baseLoginTest() throws InterruptedException {
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnPersonalArea();
+        Thread.sleep(10000);
     }
+
+    @Test
+    public void some(){
+
+    }
+
+
 
 }
