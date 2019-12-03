@@ -6,6 +6,9 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -16,19 +19,40 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
 public class BaseTest {
-    WebDriver driver;
-    String Node = "http://172.22.89.63:4444/wd/hub";
+    protected WebDriver driver;
+    protected AppiumServiceBuilder builder;
+    protected AppiumDriverLocalService service;
+    protected DesiredCapabilities serviceCaps;
 
     @Parameters({"browser", "udid"})
     @BeforeClass(description = "Инициализация тестового окружения")
     public void beforeSuite(@Optional String browser, @Optional String udid) throws MalformedURLException {
+
+            serviceCaps = new DesiredCapabilities();
+            serviceCaps.setCapability("noReset", "false");
+
+            builder = new AppiumServiceBuilder();
+            builder.withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"));
+            builder.withIPAddress("0.0.0.0");
+            builder.usingAnyFreePort();
+            builder.withCapabilities(serviceCaps);
+            builder.withStartUpTimeOut(60, TimeUnit.SECONDS);
+            builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
+
+            service = AppiumDriverLocalService.buildService(builder);
+
+            service.start();
+
         if (browser != null) {
             if (browser.equals("firefox")) {
                 System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
@@ -54,7 +78,9 @@ public class BaseTest {
             capabilities.setCapability("platformName", "android");
             capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "device");
             capabilities.setCapability(MobileCapabilityType.FULL_RESET, false);
-            driver = new AndroidDriver(new URL("http://0.0.0.0:4727/wd/hub"), capabilities);
+            driver = new AndroidDriver(service.getUrl(), capabilities);
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
         } else {
             System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
             driver = new FirefoxDriver();
@@ -65,12 +91,30 @@ public class BaseTest {
         }
 
 
-
     }
 
     @AfterClass(description = "Закрытие тестового окружения")
-    public void afterSuite() {
+    public void afterSuite() throws InterruptedException {
         driver.quit();
+        service.stop();
+        Thread.sleep(3000);
+    }
+
+
+    public boolean checkIfServerIsRunnning(int port) {
+
+        boolean isServerRunning = false;
+        ServerSocket serverSocket;
+        try {
+            serverSocket = new ServerSocket(port);
+            serverSocket.close();
+        } catch (IOException e) {
+            //If control comes here, then it means that the port is in use
+            isServerRunning = true;
+        } finally {
+            serverSocket = null;
+        }
+        return isServerRunning;
     }
 
 }

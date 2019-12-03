@@ -2,29 +2,29 @@
 <suite name="Suite" parallel="tests"  thread-count="10" >
 
 
-    <test name="firefoxTests">
-        <parameter name="browser" value="firefox" />
-        <classes>
-            <class name="com.github.frunoman.tests.LoginTests"/>
-        </classes>
-    </test>
+<!--    <test name="firefoxTests">-->
+<!--        <parameter name="browser" value="firefox" />-->
+<!--        <classes>-->
+<!--            <class name="com.github.frunoman.tests.LoginTests"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="chromeTests">
-        <parameter name="browser" value="chrome" />
-        <classes>
-            <class name="com.github.frunoman.tests.LoginTests"/>
-        </classes>
-    </test>
+<!--    <test name="chromeTests">-->
+<!--        <parameter name="browser" value="chrome" />-->
+<!--        <classes>-->
+<!--            <class name="com.github.frunoman.tests.LoginTests"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
     <test name="androidTests">
-        <parameter name="udid" value="FA8311A00879" />
+        <parameter name="udid" value="192.168.0.103:5554" />
         <classes>
             <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>
     </test>
 
     <test name="androidTests1">
-        <parameter name="udid" value="L91HVCPF2244Y" />
+        <parameter name="udid" value="192.168.0.125:5555" />
         <classes>
             <class name="com.github.frunoman.tests.LoginTests"/>
         </classes>
