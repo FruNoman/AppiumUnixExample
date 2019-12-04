@@ -14,10 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,28 +28,27 @@ import java.util.concurrent.TimeUnit;
 public class BaseTest {
     protected WebDriver driver;
     protected AppiumServiceBuilder builder;
-    protected AppiumDriverLocalService service;
-    protected DesiredCapabilities serviceCaps;
+    protected static AppiumDriverLocalService service;
 
-    @Parameters({"browser", "udid"})
-    @BeforeClass(description = "Инициализация тестового окружения")
-    public void beforeSuite(@Optional String browser, @Optional String udid) throws MalformedURLException {
-
-            serviceCaps = new DesiredCapabilities();
-            serviceCaps.setCapability("noReset", "false");
-
+    @BeforeSuite(description = "Initialize appium server")
+    public void beforeSuite() {
+        if(service==null) {
             builder = new AppiumServiceBuilder();
             builder.withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"));
             builder.withIPAddress("0.0.0.0");
             builder.usingAnyFreePort();
-            builder.withCapabilities(serviceCaps);
-            builder.withStartUpTimeOut(60, TimeUnit.SECONDS);
+            builder.withStartUpTimeOut(90, TimeUnit.SECONDS);
             builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
 
             service = AppiumDriverLocalService.buildService(builder);
 
             service.start();
+        }
+    }
 
+    @Parameters({"browser", "udid"})
+    @BeforeClass(description = "Initialize webdriver")
+    public void beforeClass(@Optional String browser, @Optional String udid){
         if (browser != null) {
             if (browser.equals("firefox")) {
                 System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
@@ -87,34 +83,20 @@ public class BaseTest {
             driver.manage().window().maximize();
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.get("http://rozetka.com.ua/");
-
         }
 
 
     }
 
-    @AfterClass(description = "Закрытие тестового окружения")
-    public void afterSuite() throws InterruptedException {
+    @AfterClass(description = "Close webdriver")
+    public void afterClass(){
         driver.quit();
+    }
+
+    @AfterSuite(description = "Stop appium server")
+    public void afterSuite() {
         service.stop();
-        Thread.sleep(3000);
     }
 
-
-    public boolean checkIfServerIsRunnning(int port) {
-
-        boolean isServerRunning = false;
-        ServerSocket serverSocket;
-        try {
-            serverSocket = new ServerSocket(port);
-            serverSocket.close();
-        } catch (IOException e) {
-            //If control comes here, then it means that the port is in use
-            isServerRunning = true;
-        } finally {
-            serverSocket = null;
-        }
-        return isServerRunning;
-    }
 
 }

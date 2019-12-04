@@ -2,19 +2,19 @@
 <suite name="Suite" parallel="tests"  thread-count="10" >
 
 
-<!--    <test name="firefoxTests">-->
-<!--        <parameter name="browser" value="firefox" />-->
-<!--        <classes>-->
-<!--            <class name="com.github.frunoman.tests.LoginTests"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="firefoxTests">
+        <parameter name="browser" value="firefox" />
+        <classes>
+            <class name="com.github.frunoman.tests.LoginTests"/>
+        </classes>
+    </test>
 
-<!--    <test name="chromeTests">-->
-<!--        <parameter name="browser" value="chrome" />-->
-<!--        <classes>-->
-<!--            <class name="com.github.frunoman.tests.LoginTests"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="chromeTests">
+        <parameter name="browser" value="chrome" />
+        <classes>
+            <class name="com.github.frunoman.tests.LoginTests"/>
+        </classes>
+    </test>
 
     <test name="androidTests">
         <parameter name="udid" value="192.168.0.103:5554" />
