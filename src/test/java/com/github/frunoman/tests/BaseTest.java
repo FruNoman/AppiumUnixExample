@@ -9,6 +9,7 @@ import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
+import org.aspectj.lang.annotation.After;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -32,39 +33,35 @@ public class BaseTest {
 
     @BeforeSuite(description = "Initialize appium server")
     public void beforeSuite() {
-        if(service==null) {
+        if (service == null) {
             builder = new AppiumServiceBuilder();
             builder.withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"));
             builder.withIPAddress("0.0.0.0");
             builder.usingAnyFreePort();
             builder.withStartUpTimeOut(90, TimeUnit.SECONDS);
             builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
-
             service = AppiumDriverLocalService.buildService(builder);
-
             service.start();
         }
     }
 
     @Parameters({"browser", "udid"})
     @BeforeClass(description = "Initialize webdriver")
-    public void beforeClass(@Optional String browser, @Optional String udid){
-        if (browser != null) {
-            if (browser.equals("firefox")) {
-                System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
-                driver = new FirefoxDriver();
-                driver.manage().window().maximize();
-                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                driver.get("http://rozetka.com.ua/");
-
-            } else if (browser.equals("chrome")) {
-                System.setProperty("webdriver.chrome.driver", this.getClass().getClassLoader().getResource("chromedriver").getPath());
-                driver = new ChromeDriver();
-                driver.manage().window().maximize();
-                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                driver.get("http://rozetka.com.ua/");
-            }
-        } else if (udid != null) {
+    public void beforeClass(@Optional String browser, @Optional String udid) {
+//        if (browser != null) {
+//            if (browser.equals("firefox")) {
+//                System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
+//                driver = new FirefoxDriver();
+//                driver.manage().window().maximize();
+//                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//            } else if (browser.equals("chrome")) {
+//                System.setProperty("webdriver.chrome.driver", this.getClass().getClassLoader().getResource("chromedriver").getPath());
+//                driver = new ChromeDriver();
+//                driver.manage().window().maximize();
+//                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//            }
+//        } else
+            if (udid != null) {
             DesiredCapabilities capabilities = DesiredCapabilities.android();
             capabilities.setCapability(MobileCapabilityType.APP, getClass().getClassLoader().getResource("rozetka.apk").getPath());
             capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
@@ -77,19 +74,27 @@ public class BaseTest {
             driver = new AndroidDriver(service.getUrl(), capabilities);
             driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-        } else {
-            System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
-            driver = new FirefoxDriver();
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.get("http://rozetka.com.ua/");
         }
+//            else {
+//            System.setProperty("webdriver.gecko.driver", this.getClass().getClassLoader().getResource("geckodriver").getPath());
+//        }
+    }
+
+    @BeforeMethod
+    public void beforeEveryTest(){
 
 
     }
 
+    @AfterMethod
+    public void afterEveryTest(){
+        if (driver instanceof AndroidDriver) {
+            ((AndroidDriver) driver).resetApp();
+        }
+    }
+
     @AfterClass(description = "Close webdriver")
-    public void afterClass(){
+    public void afterClass() {
         driver.quit();
     }
 
