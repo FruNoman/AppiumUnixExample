@@ -10,6 +10,12 @@ import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.aspectj.lang.annotation.After;
+import org.openqa.grid.common.RegistrationRequest;
+import org.openqa.grid.internal.utils.SelfRegisteringRemote;
+import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
+import org.openqa.grid.internal.utils.configuration.GridNodeConfiguration;
+import org.openqa.grid.web.Hub;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,30 +25,35 @@ import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
-public class BaseTest {
-    protected WebDriver driver;
+public class AppiumBaseTest {
+    protected RemoteWebDriver driver;
     protected AppiumServiceBuilder builder;
     protected static AppiumDriverLocalService service;
 
     @BeforeSuite(description = "Initialize appium server")
-    public void beforeSuite() {
+    public void beforeSuite() throws Exception {
+
         if (service == null) {
             builder = new AppiumServiceBuilder();
             builder.withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"));
             builder.withIPAddress("0.0.0.0");
-            builder.usingAnyFreePort();
+            builder.usingPort(4727);
             builder.withStartUpTimeOut(90, TimeUnit.SECONDS);
             builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
             service = AppiumDriverLocalService.buildService(builder);
             service.start();
         }
+
     }
 
     @Parameters({"browser", "udid"})
@@ -61,7 +72,9 @@ public class BaseTest {
 //                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 //            }
 //        } else
-            if (udid != null) {
+
+
+        if (udid != null) {
             DesiredCapabilities capabilities = DesiredCapabilities.android();
             capabilities.setCapability(MobileCapabilityType.APP, getClass().getClassLoader().getResource("rozetka.apk").getPath());
             capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
@@ -81,13 +94,13 @@ public class BaseTest {
     }
 
     @BeforeMethod
-    public void beforeEveryTest(){
+    public void beforeEveryTest() {
 
 
     }
 
     @AfterMethod
-    public void afterEveryTest(){
+    public void afterEveryTest() {
         if (driver instanceof AndroidDriver) {
             ((AndroidDriver) driver).resetApp();
         }

@@ -2,13 +2,12 @@ package com.github.frunoman.tests;
 
 import com.github.frunoman.pages.MainPage;
 
-import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 
-public class LoginTests extends BaseTest {
+public class LoginTests extends AppiumBaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test()
