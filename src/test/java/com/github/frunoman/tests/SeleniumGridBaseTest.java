@@ -116,7 +116,9 @@ public class SeleniumGridBaseTest {
         capabilities.setCapability("newCommandTimeout", "120");
         capabilities.setCapability(MobileCapabilityType.FULL_RESET, false);
 
-        WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4445/wd/hub/"), capabilities);
+        RemoteWebDriver driver = new RemoteWebDriver(new URL("http://localhost:4445/wd/hub/"), capabilities);
+
+
 
         Thread.sleep(1000);
 
