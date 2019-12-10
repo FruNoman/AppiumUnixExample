@@ -2,6 +2,8 @@ package com.github.frunoman.tests;
 
 import bsh.Remote;
 import com.github.frunoman.pages.MainPage;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.AutomationName;
@@ -99,7 +101,7 @@ public class SeleniumGridBaseTest {
 
     @Test
     public void some() throws InterruptedException, MalformedURLException {
-        Thread.sleep(10000);
+        Thread.sleep(3000);
 
         DesiredCapabilities capabilities = DesiredCapabilities.android();
         capabilities.setCapability("browserName", "Android");
@@ -111,11 +113,12 @@ public class SeleniumGridBaseTest {
         capabilities.setCapability(MobileCapabilityType.APP, getClass().getClassLoader().getResource("rozetka.apk").getPath());
         capabilities.setCapability(AndroidMobileCapabilityType.APP_WAIT_ACTIVITY, "ua.com.rozetka.shop.*");
         capabilities.setCapability(AndroidMobileCapabilityType.SYSTEM_PORT, new Random().nextInt(5672));
+        capabilities.setCapability("newCommandTimeout", "120");
         capabilities.setCapability(MobileCapabilityType.FULL_RESET, false);
-        WebDriver driver = new AndroidDriver(new URL("http://0.0.0.0:4729/wd/hub/"), capabilities);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-        Thread.sleep(10000);
+        WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4445/wd/hub/"), capabilities);
+
+        Thread.sleep(1000);
 
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnPersonalArea();
