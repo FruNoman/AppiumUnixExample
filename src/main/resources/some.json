@@ -4,15 +4,13 @@
     {
       "browserName": "Chrome",
       "maxInstances": 1,
-      "platformName": "Android",
-      "platform": "Android",
-      "platformVersion": "5.1",
-      "version": "5.1"
+      "platformName": "Android"
     }
   ],
   "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
+  "url":"http://0.0.0.0:4729/wd/hub",
   "maxSession": 5,
-  "host": "http://0.0.0.0",
+  "host": "http://localhost",
   "port": 4729,
   "hubPort": 4445,
   "hubHost": "http://0.0.0.0",

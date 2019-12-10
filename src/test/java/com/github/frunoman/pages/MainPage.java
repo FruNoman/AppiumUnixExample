@@ -31,7 +31,6 @@ public class MainPage extends BasePage{
     @Step("Щелкнуть по 'Личные данные'")
     public void clickOnPersonalArea(){
         personalAreaButton.click();
-//      driver.findElement(By.xpath("//*[@resource-id='ua.com.rozetka.shop:id/rl_background'][5]")).click();
     }
 
 
